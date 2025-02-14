@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js'
 
 /**
  * Base
@@ -13,7 +13,7 @@ const sizes = {
     height: window.innerHeight
 }
 
-window.addEventListener('resize', ()=> {
+window.addEventListener('resize', () => {
     sizes.width = window.innerWidth
     sizes.height = window.innerHeight
 
@@ -26,16 +26,34 @@ window.addEventListener('resize', ()=> {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
+//
+window.addEventListener('dblclick', () => {
+    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+
+    if (!fullscreenElement) {
+        if (canvas.requestFullscreen) {
+            canvas.requestFullscreen()
+        } else if (canvas.webkitRequestFullscreen) {
+            canvas.webkitRequestFullscreen()
+        }
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen()
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen()
+        }
+    }
+})
+
 // Cursor
 const cursor = {
     x: 0,
     y: 0
 }
 
-window.addEventListener('mousemove', (event) =>
-{
+window.addEventListener('mousemove', (event) => {
     cursor.x = event.clientX / sizes.width - 0.5
-    cursor.y = - (event.clientY / sizes.height - 0.5)
+    cursor.y = -(event.clientY / sizes.height - 0.5)
 })
 
 // Scene
@@ -44,7 +62,7 @@ const scene = new THREE.Scene()
 // Object
 const mesh = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1, 5, 5, 5),
-    new THREE.MeshBasicMaterial({ color: 0xff0000 })
+    new THREE.MeshBasicMaterial({color: 0xff0000})
 )
 scene.add(mesh)
 
@@ -69,8 +87,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 // Animate
 const clock = new THREE.Clock()
 
-const tick = () =>
-{
+const tick = () => {
     const elapsedTime = clock.getElapsedTime()
 
     // Update controls
