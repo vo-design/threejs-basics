@@ -106,14 +106,30 @@ gui
 
 gui
     .addColor(debugObject, 'color')
-    .onChange(()=> {
+    .onChange(() => {
         material.color.set(debugObject.color)
     })
 
 debugObject.spin = () => {
-    gsap.to(mesh.rotation, {duration: 1, y: mesh.rotation.y +Math.PI *2})
+    gsap.to(mesh.rotation, {duration: 1, y: mesh.rotation.y + Math.PI * 2})
 }
-gui.add(debugObject, 'spin')
+gui
+    .add(debugObject, 'spin')
+
+debugObject.subdivision = 2
+gui
+    .add(debugObject, 'subdivision')
+    .min(1)
+    .max(20)
+    .step(1)
+    .onFinishChange(() => {
+        mesh.geometry.dispose()
+        mesh.geometry = new THREE.BoxGeometry(
+            1,1,1,
+            debugObject.subdivision, debugObject.subdivision, debugObject.subdivision
+        )
+    })
+
 
 // Camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
