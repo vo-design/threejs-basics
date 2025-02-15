@@ -1,5 +1,10 @@
 import * as THREE from 'three'
+import {gsap} from "gsap";
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js'
+import GUI from "lil-gui";
+
+const gui = new GUI()
+const debugObject = {}
 
 /**
  * Base
@@ -70,6 +75,8 @@ const scene = new THREE.Scene()
 // )
 // scene.add(mesh)
 
+debugObject.color = '#3a6ea6'
+
 const geometry = new THREE.BufferGeometry()
 const count = 50
 const positionsArray = new Float32Array(count * 3 * 3)
@@ -79,10 +86,34 @@ for (let i = 0; i < count * 3 * 3; i++) {
 const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3)
 geometry.setAttribute('position', positionsAttribute)
 
-const material = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true})
+const material = new THREE.MeshBasicMaterial({color: debugObject.color, wireframe: true})
 
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
+
+gui
+    .add(mesh.position, 'y')
+    .max(3)
+    .min(-3)
+    .step(0.01)
+    .name('elevation')
+
+gui
+    .add(mesh, 'visible')
+
+gui
+    .add(material, 'wireframe')
+
+gui
+    .addColor(debugObject, 'color')
+    .onChange(()=> {
+        material.color.set(debugObject.color)
+    })
+
+debugObject.spin = () => {
+    gsap.to(mesh.rotation, {duration: 1, y: mesh.rotation.y +Math.PI *2})
+}
+gui.add(debugObject, 'spin')
 
 // Camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
