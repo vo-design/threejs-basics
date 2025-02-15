@@ -3,7 +3,19 @@ import {gsap} from "gsap";
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js'
 import GUI from "lil-gui";
 
-const gui = new GUI()
+const gui = new GUI({
+    width: 300,
+    title: 'Nice debug UI',
+    closeFolders: false,
+})
+
+// gui.hide()
+
+window.addEventListener('keydown', (event) => {
+    if(event.key === 'h')
+        gui.show(gui._hidden)
+})
+
 const debugObject = {}
 
 /**
@@ -92,7 +104,7 @@ const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
 const cubeTweaks = gui.addFolder('Awesome cube')
-cubeTweaks.close()
+// cubeTweaks.close()
 
 cubeTweaks
     .add(mesh.position, 'y')
