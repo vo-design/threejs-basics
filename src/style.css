@@ -5,6 +5,12 @@
 
 body,html {
     overflow: hidden;
+    background: #000;
+}
+
+h1 {
+    color: grey;
+    text-align: center;
 }
 
 .webgl {
