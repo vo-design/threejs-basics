@@ -13,72 +13,46 @@ const scene = new THREE.Scene()
 /**
  * Textures
  */
-const loadingManager = new THREE.LoadingManager()
-loadingManager.onStart = () =>
-{
-    console.log('loadingManager: loading started')
-}
-loadingManager.onLoad = () =>
-{
-    console.log('loadingManager: loading finished')
-}
-loadingManager.onProgress = () =>
-{
-    console.log('loadingManager: loading progressing')
-}
-loadingManager.onError = () =>
-{
-    console.log('loadingManager: loading error')
-}
+const textureLoader = new THREE.TextureLoader()
 
-const textureLoader = new THREE.TextureLoader(loadingManager)
+const doorColorTexture = textureLoader.load('../static/textures/door/color.jpg')
+const doorAlphaTexture = textureLoader.load('../stati../static/textures/door/alpha.jpg')
+const doorAmbientOcclusionTexture = textureLoader.load('../static/textures/door/ambientOcclusion.jpg')
+const doorHeightTexture = textureLoader.load('../static/textures/door/height.jpg')
+const doorNormalTexture = textureLoader.load('../static/textures/door/normal.jpg')
+const doorMetalnessTexture = textureLoader.load('../static/textures/door/metalness.jpg')
+const doorRoughnessTexture = textureLoader.load('../static/textures/door/roughness.jpg')
+const matcapTexture = textureLoader.load('../static/textures/matcaps/1.png')
+const gradientTexture = textureLoader.load('../static/textures/gradients/3.jpg')
 
-// const colorTexture = textureLoader.load('/textures/checkerboard-1024x1024.png')
-// const colorTexture = textureLoader.load('/textures/checkerboard-2x2.png')
-const colorTexture = textureLoader.load(
-    '../static/textures/minecraft.png',
-    () =>
-    {
-        console.log('textureLoader: loading finished')
-    },
-    () =>
-    {
-        console.log('textureLoader: loading progressing')
-    },
-    () =>
-    {
-        console.log('textureLoader: loading error')
-    }
-)
-colorTexture.colorSpace = THREE.SRGBColorSpace
-colorTexture.wrapS = THREE.MirroredRepeatWrapping
-colorTexture.wrapT = THREE.MirroredRepeatWrapping
-// colorTexture.repeat.x = 2
-// colorTexture.repeat.y = 3
-// colorTexture.offset.x = 0.5
-// colorTexture.offset.y = 0.5
-// colorTexture.rotation = Math.PI * 0.25
-// colorTexture.center.x = 0.5
-// colorTexture.center.y = 0.5
-colorTexture.generateMipmaps = false
-colorTexture.minFilter = THREE.NearestFilter
-colorTexture.magFilter = THREE.NearestFilter
+doorColorTexture.colorSpace = THREE.SRGBColorSpace
+matcapTexture.colorSpace = THREE.SRGBColorSpace
 
-const alphaTexture = textureLoader.load('../static/textures/door/alpha.jpg')
-const heightTexture = textureLoader.load('../static/textures/door/height.jpg')
-const normalTexture = textureLoader.load('../static/textures/door/normal.jpg')
-const ambientOcclusionTexture = textureLoader.load('../static/textures/door/ambientOcclusion.jpg')
-const metalnessTexture = textureLoader.load('../static/textures/door/metalness.jpg')
-const roughnessTexture = textureLoader.load('../static/textures/door/roughness.jpg')
 
 /**
- * Object
+ * Objects
  */
-const geometry = new THREE.BoxGeometry(1, 1, 1)
-console.log(geometry.attributes)
-const material = new THREE.MeshBasicMaterial({ map: colorTexture })
-const mesh = new THREE.Mesh(geometry, material)
-scene.add(mesh)
+// MeshBasicMaterial
+const material = new THREE.MeshBasicMaterial({ map: doorColorTexture })
+
+const sphere = new THREE.Mesh(
+    new THREE.SphereGeometry(0.5, 16, 16),
+    material
+)
+sphere.position.x = - 1.5
+
+const plane = new THREE.Mesh(
+    new THREE.PlaneGeometry(1, 1),
+    material
+)
+
+const torus = new THREE.Mesh(
+    new THREE.TorusGeometry(0.3, 0.2, 16, 32),
+    material
+)
+torus.position.x = 1.5
+
+scene.add(sphere, plane, torus)
 
 /**
  * Sizes
@@ -110,7 +84,7 @@ window.addEventListener('resize', () =>
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.x = 1
 camera.position.y = 1
-camera.position.z = 1
+camera.position.z = 2
 scene.add(camera)
 
 // Controls
@@ -137,6 +111,15 @@ const tick = () =>
 
     // Update controls
     controls.update()
+
+    // Update objects
+    sphere.rotation.y = 0.1 * elapsedTime
+    plane.rotation.y = 0.1 * elapsedTime
+    torus.rotation.y = 0.1 * elapsedTime
+
+    sphere.rotation.x = 0.15 * elapsedTime
+    plane.rotation.x = 0.15 * elapsedTime
+    torus.rotation.x = 0.15 * elapsedTime
 
     // Render
     renderer.render(scene, camera)
