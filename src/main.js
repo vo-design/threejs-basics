@@ -31,15 +31,16 @@ fontLoader.load(
                 font: font,
                 size: 0.5,
                 depth: 0.2,
-                curveSegments: 12,
+                curveSegments: 5,
                 bevelEnabled: true,
                 bevelThickness: 0.03,
                 bevelSize: 0.02,
                 bevelOffset: 0,
-                bevelSegments: 5
+                bevelSegments: 3
             }
         )
         const textMaterial = new THREE.MeshBasicMaterial()
+        textMaterial.wireframe = true
         const text = new THREE.Mesh(textGeometry, textMaterial)
         scene.add(text)
     }
@@ -54,12 +55,12 @@ const textureLoader = new THREE.TextureLoader()
 /**
  * Object
  */
-const cube = new THREE.Mesh(
-    new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshBasicMaterial()
-)
-
-scene.add(cube)
+// const cube = new THREE.Mesh(
+//     new THREE.BoxGeometry(1, 1, 1),
+//     new THREE.MeshBasicMaterial()
+// )
+//
+// scene.add(cube)
 
 /**
  * Sizes
