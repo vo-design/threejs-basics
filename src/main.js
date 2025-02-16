@@ -16,6 +16,11 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
+//Axes helper
+const axesHelper = new THREE.AxesHelper()
+scene.add(axesHelper)
+
+
 /**
  * Fonts
  */
@@ -39,6 +44,14 @@ fontLoader.load(
                 bevelSegments: 3
             }
         )
+        textGeometry.computeBoundingBox()
+        textGeometry.translate(
+            - textGeometry.boundingBox.max.x * 0.5,
+            - textGeometry.boundingBox.max.y * 0.5,
+            - textGeometry.boundingBox.max.z * 0.5
+        )
+
+
         const textMaterial = new THREE.MeshBasicMaterial()
         textMaterial.wireframe = true
         const text = new THREE.Mesh(textGeometry, textMaterial)
