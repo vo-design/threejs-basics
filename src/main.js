@@ -16,7 +16,7 @@ const scene = new THREE.Scene()
 const textureLoader = new THREE.TextureLoader()
 
 const doorColorTexture = textureLoader.load('../static/textures/door/color.jpg')
-const doorAlphaTexture = textureLoader.load('../stati../static/textures/door/alpha.jpg')
+const doorAlphaTexture = textureLoader.load('../static/textures/door/alpha.jpg')
 const doorAmbientOcclusionTexture = textureLoader.load('../static/textures/door/ambientOcclusion.jpg')
 const doorHeightTexture = textureLoader.load('../static/textures/door/height.jpg')
 const doorNormalTexture = textureLoader.load('../static/textures/door/normal.jpg')
@@ -33,7 +33,16 @@ matcapTexture.colorSpace = THREE.SRGBColorSpace
  * Objects
  */
 // MeshBasicMaterial
-const material = new THREE.MeshBasicMaterial({ map: doorColorTexture })
+const material = new THREE.MeshBasicMaterial()
+// material.map = doorColorTexture
+// material.color = new THREE.Color('#ff0000')
+// material.wireframe = true
+// material.transparent = true
+// material.opacity = 0.5
+// material.alphaMap = doorAlphaTexture
+material.side = THREE.DoubleSide
+
+
 
 const sphere = new THREE.Mesh(
     new THREE.SphereGeometry(0.5, 16, 16),
