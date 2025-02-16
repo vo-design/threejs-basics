@@ -20,7 +20,7 @@ Three.js Journey by Bruno Simon [@brunosimon](https://github.com/brunosimon/) is
 - 3D Text – The highlight of my project! Using THREE.TextGeometry creates and customizes 3D typography, adding lighting, shadows, and a smooth interactive feel.
 
 ## Final result
-![Cover](./public/3d-text-three-js.png)
+![Cover](./public/3d-text-three-js.gif)
 
 ## Installation
 
