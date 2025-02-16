@@ -16,10 +16,12 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
-//Axes helper
-const axesHelper = new THREE.AxesHelper()
-scene.add(axesHelper)
-
+/**
+ * Textures
+ */
+const textureLoader = new THREE.TextureLoader()
+const matcapTexture = textureLoader.load('../static/textures/matcaps/8.png')
+matcapTexture.colorSpace = THREE.SRGBColorSpace
 
 /**
  * Fonts
@@ -30,6 +32,11 @@ fontLoader.load(
     '../static/fonts/helvetiker_regular.typeface.json',
     (font) =>
     {
+
+        // Material
+        const material = new THREE.MeshMatcapMaterial({ matcap: matcapTexture })
+
+        //Text
         const textGeometry = new TextGeometry(
             'Hello Three.js',
             {
@@ -44,36 +51,38 @@ fontLoader.load(
                 bevelSegments: 3
             }
         )
-        textGeometry.computeBoundingBox()
-        textGeometry.translate(
-            - textGeometry.boundingBox.max.x * 0.5,
-            - textGeometry.boundingBox.max.y * 0.5,
-            - textGeometry.boundingBox.max.z * 0.5
-        )
+
+        textGeometry.center()
 
 
-        const textMaterial = new THREE.MeshBasicMaterial()
-        textMaterial.wireframe = true
+        const textMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture })
         const text = new THREE.Mesh(textGeometry, textMaterial)
         scene.add(text)
+
+        for(let i = 0; i < 100; i++)
+        {
+            const donutGeometry = new THREE.TorusGeometry(0.3, 0.2, 20, 45)
+            const donutMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture })
+            const donut = new THREE.Mesh(donutGeometry, donutMaterial)
+
+            donut.position.x = (Math.random() - 0.5) * 10
+            donut.position.y = (Math.random() - 0.5) * 10
+            donut.position.z = (Math.random() - 0.5) * 10
+
+            donut.rotation.x = Math.random() * Math.PI
+            donut.rotation.y = Math.random() * Math.PI
+
+            const scale = Math.random()
+            donut.scale.set(scale, scale, scale)
+
+            scene.add(donut)
+        }
+
+
     }
 )
 
 
-/**
- * Textures
- */
-const textureLoader = new THREE.TextureLoader()
-
-/**
- * Object
- */
-// const cube = new THREE.Mesh(
-//     new THREE.BoxGeometry(1, 1, 1),
-//     new THREE.MeshBasicMaterial()
-// )
-//
-// scene.add(cube)
 
 /**
  * Sizes
